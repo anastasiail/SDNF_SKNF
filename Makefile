@@ -15,12 +15,8 @@ BIN_DIR = bin
 SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
 TEST_FILES = $(wildcard $(TEST_DIR)/*.c)
 
-# Исключаем main.c из объектных файлов для библиотеки
-LIB_SRC_FILES = $(filter-out $(SRC_DIR)/main.c, $(SRC_FILES))
-
 # Объектные файлы
-LIB_OBJ = $(LIB_SRC_FILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
-MAIN_OBJ = $(BUILD_DIR)/main.o
+OBJ = $(SRC_FILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 TEST_OBJ = $(TEST_FILES:$(TEST_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 # Исполняемые файлы
@@ -39,11 +35,11 @@ debug: CFLAGS += $(DEBUG_FLAGS)
 debug: $(MAIN_TARGET)
 
 # Сборка основной программы
-$(MAIN_TARGET): $(LIB_OBJ) $(MAIN_OBJ) | $(BIN_DIR)
+$(MAIN_TARGET): $(OBJ) | $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $@ $^
 
-# Сборка тестов
-$(TEST_TARGET): $(LIB_OBJ) $(TEST_OBJ) | $(BIN_DIR)
+# Сборка тестовой программы
+$(TEST_TARGET): $(filter-out $(BUILD_DIR)/main.o, $(OBJ)) $(TEST_OBJ) | $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $@ $^
 
 # Компиляция объектных файлов из исходников
