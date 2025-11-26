@@ -4,8 +4,6 @@
 void run_tests() {
     int res;
     
-    printf("=== ТЕСТИРОВАНИЕ SDNF/SKNF ===\n\n");
-    
     res = SDNF_SKNF(NULL);
     if (res != 1) printf("Нулевой указатель не вернул ошибку\n");
     else printf("Нулевой указатель вернул ошибку (верно)\n\n");
@@ -55,4 +53,9 @@ void run_tests() {
     printf("Большой вектор: (0101010101010101):\n");
     SDNF_SKNF("0101010101010101");
     printf("\n");
+}
+
+int main() {
+    run_tests();
+    return 0;
 }
